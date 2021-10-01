@@ -104,9 +104,6 @@ public:
 
     int cycle_ = 0;
 
-    // Static methods
-    // static Lut_tool *getInstance();
-
     void loadConfig();
     void setupTrackbar();
     void modifyTable(const cv::Mat &data, int flag);

@@ -1,16 +1,10 @@
 
 #include "ros_lut_tool/lut_tool.hpp"
 
-// Lut_tool *Lut_tool::instance_ = NULL;
 void Lut_tool::loadConfig()
 {
     cv::FileStorage fs(lut_path, cv::FileStorage::READ);
     fs["color_table"] >> color_table;
-    // cv::resize(color_table, color_table, cv::Size(256, 256));
-    // fs["min_val"] >> ball_param.min_val;
-    // fs["max_val"] >> ball_param.max_val;
-    // fs["min_sat"] >> ball_param.min_sat;
-    // fs["max_sat"] >> ball_param.max_sat;
     fs["min_val"] >> white_param.min_val;
     fs["max_val"] >> white_param.max_val;
     fs["min_sat"] >> white_param.min_sat;
@@ -24,14 +18,6 @@ void Lut_tool::setupTrackbar()
 {
 
     cv::namedWindow(param_winname, cv::WINDOW_NORMAL);
-
-    // cv::createTrackbar("Ball Min. Val", param_winname, &ball_param.min_val, 255);
-    // cv::createTrackbar("Ball Max. Val", param_winname, &ball_param.max_val, 255);
-    // cv::createTrackbar("Ball Min. Sat", param_winname, &ball_param.min_sat, 255);
-    // cv::createTrackbar("Ball Max. Sat", param_winname, &ball_param.max_sat, 255);
-    //
-    // cv::createTrackbar("White Min. Val", param_winname, &white_param.min_val, 255);
-    // cv::createTrackbar("White Max. Val", param_winname, &white_param.max_val, 255);
     cv::createTrackbar("White Min. Sat", param_winname, &white_param.min_sat, 255);
     cv::createTrackbar("White Max. Sat", param_winname, &white_param.max_sat, 255);
     cv::createTrackbar("White Min. Hue", param_winname, &white_param.min_hue, 255);
@@ -308,8 +294,6 @@ void Lut_tool::imageCallback(const sensor_msgs::ImageConstPtr &_msg)
 
 void Lut_tool::process()
 {
-    // std::lock_guard<std::mutex> l(lock_);
-    // std::cout << cycle_++ << std::endl;
     if (cv_img_ptr_subs_ == nullptr)
         return;
 
@@ -318,9 +302,6 @@ void Lut_tool::process()
     cv::resize(input, input, cv::Size(frame_width, frame_height));
     cv::cvtColor(input, input_hsv, cv::COLOR_BGR2HSV);
 
-    // cv::Mat field_color(segmentField(input_hsv));
-    // cv::Mat ball_color( segmentBall(input_hsv) );
-    // cv::Mat white_color(segmentWhite(input_hsv));
     cv::Mat output(segmentOutput(input_hsv));
 
     cv::Mat temp;
