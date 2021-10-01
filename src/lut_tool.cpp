@@ -44,7 +44,7 @@ Lut_tool::Lut_tool(/* args */) : nh_(ros::this_node::getName()),
     std::cout << "init" << std::endl;
     color_table = cv::Mat(hue_range, sat_range, CV_8UC1);
 
-    cv::setMouseCallback("[lut_tool] Calibrator", mouse_call, 0);
+    cv::setMouseCallback(winname, mouse_call, 0);
     nh_.param<std::string>("ball_config_path", lut_path,
                            ros::package::getPath("ros_lut_tool") + "/config/config.yaml");
 
@@ -314,17 +314,14 @@ void Lut_tool::process()
         return;
 
     input = cv_img_ptr_subs_->image;
-    std::cout << "here0" << std::endl;
 
     cv::resize(input, input, cv::Size(frame_width, frame_height));
     cv::cvtColor(input, input_hsv, cv::COLOR_BGR2HSV);
-    std::cout << "here1" << std::endl;
 
     // cv::Mat field_color(segmentField(input_hsv));
     // cv::Mat ball_color( segmentBall(input_hsv) );
     // cv::Mat white_color(segmentWhite(input_hsv));
     cv::Mat output(segmentOutput(input_hsv));
-    std::cout << "here2" << std::endl;
 
     cv::Mat temp;
     cv::Mat img_range;
@@ -337,13 +334,11 @@ void Lut_tool::process()
     drawText();
 
     std::cout << "here" << std::endl;
-    cv::imshow("[lut_tool] Calibrator", all_in_one);
+    cv::imshow(winname, all_in_one);
 
-    while (1)
+    while (ros::ok())
     {
-        if (quit)
-            break;
-        cv::setMouseCallback("[lut_tool] Calibrator", mouse_call, 0);
+        cv::setMouseCallback(winname, mouse_call, 0);
         // update
         getTrackbar();
         cv::inRange(input_hsv, cv::Scalar(white_param.min_hue, white_param.min_sat, 0),
@@ -351,7 +346,7 @@ void Lut_tool::process()
         cv::cvtColor(img_range, img_range, cv::COLOR_GRAY2BGR);
         all_in_one = makeAll(input, input_hsv, output, img_range);
         drawText();
-        cv::imshow("[lut_tool] Calibrator", all_in_one);
+        cv::imshow(winname, all_in_one);
         // condition
         int key = cv::waitKey(1) & 0xFF;
         if (key == 32)

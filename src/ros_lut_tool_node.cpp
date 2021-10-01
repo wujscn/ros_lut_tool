@@ -69,7 +69,7 @@ void mouse_call(int event, int x, int y, int flags, void *data)
 
         cv::Mat temp(lut_tool->all_in_one.clone());
         cv::rectangle(temp, lut_tool->mouse_stuff.coor1, pt, cv::Scalar(0, 0, 255));
-        cv::imshow("[lut_tool] Calibrator", temp);
+        cv::imshow(lut_tool->winname, temp);
     }
 
     if (lut_tool->mouse_stuff.left_down & lut_tool->mouse_stuff.left_up)
@@ -87,7 +87,7 @@ void mouse_call(int event, int x, int y, int flags, void *data)
         lut_tool->mouse_stuff.left_down = false;
         lut_tool->mouse_stuff.left_up = false;
 
-        while (1)
+        while (ros::ok())
         {
             int key = cv::waitKey(5) & 0xFF;
             if (key == 'f')
@@ -146,7 +146,7 @@ void mouse_call(int event, int x, int y, int flags, void *data)
             else if (key == 32)
                 break;
         }
-        cv::destroyWindow("[lut_tool] Selected ROI");
+        // cv::destroyWindow("[lut_tool] Selected ROI");
     }
 }
 

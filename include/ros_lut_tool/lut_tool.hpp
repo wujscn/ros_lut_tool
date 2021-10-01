@@ -89,6 +89,7 @@ public:
     std::string lut_path = "../data/config.yaml";
     std::string video_path = "/home/wujs/dataset/robocup/cup18.avi";
     std::string param_winname = "[lut_tool] Parameters config";
+    std::string winname = "[lut_tool] Calibrator";
 
     unsigned int img_encoding_;
 
@@ -100,8 +101,6 @@ public:
     MouseStuff mouse_stuff;
 
     std::mutex lock_;
-
-    bool quit = false;
 
     int cycle_ = 0;
 
