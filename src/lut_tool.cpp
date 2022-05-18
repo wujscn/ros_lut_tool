@@ -333,7 +333,9 @@ void Lut_tool::process()
     all_in_one = makeAll(input, input_hsv, output, img_range);
     drawText();
 
-    std::cout << "here" << std::endl;
+    time_t now = time(0);
+    char* dt = ctime(&now);
+    std::cout << "New Frame, date: " << dt << std::endl;
     cv::imshow(winname, all_in_one);
 
     while (ros::ok())
