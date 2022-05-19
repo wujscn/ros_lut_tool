@@ -45,8 +45,11 @@ Lut_tool::Lut_tool(/* args */) : nh_(ros::this_node::getName()),
     color_table = cv::Mat(hue_range, sat_range, CV_8UC1);
 
     cv::setMouseCallback(winname, mouse_call, 0);
-    nh_.param<std::string>("ball_config_path", lut_path,
-                           ros::package::getPath("ros_lut_tool") + "/config/config.yaml");
+
+    // relative path
+    nh_.param<std::string>("lut_config_path", lut_path,
+                            + "/config/config.yaml");
+    lut_path = ros::package::getPath("ros_lut_tool") + lut_path;
 
     std::cout << "config path" << lut_path << std::endl;
     std::cout << color_table << std::endl;

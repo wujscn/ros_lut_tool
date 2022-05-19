@@ -76,13 +76,15 @@ void mouse_call(int event, int x, int y, int flags, void *data) {
         std::min(lut_tool->mouse_stuff.coor1.x, lut_tool->mouse_stuff.coor2.x);
     box.y =
         std::min(lut_tool->mouse_stuff.coor1.y, lut_tool->mouse_stuff.coor2.y);
-    // convert the left-top window
-    box.x -= frame_width;
 
     cv::Mat sel_roi(lut_tool->all_in_one, box);
-    cv::resize(sel_roi, sel_roi, cv::Size(sel_roi.cols * 4, sel_roi.rows * 4), 0, 0,
+
+    // convert the left-top window
+    box.x -= frame_width;
+    cv::Mat sel_roi_show(lut_tool->all_in_one.clone(), box);    // for imshow
+    cv::resize(sel_roi_show, sel_roi_show, cv::Size(sel_roi_show.cols * 4, sel_roi_show.rows * 4), 0, 0,
            1); // INTER_LINEAR
-    cv::imshow("[lut_tool] SELECTED", sel_roi);
+    cv::imshow("[lut_tool] SELECTED", sel_roi_show);
 
     lut_tool->mouse_stuff.left_down = false;
     lut_tool->mouse_stuff.left_up = false;
@@ -121,7 +123,7 @@ void mouse_call(int event, int x, int y, int flags, void *data) {
         lut_tool->modifyTableRange(1);
         break;
       } else if (key == 'W') {
-        std::cout << "[lut_tool] Line color tagged!." << std::endl;
+        std::cout << "[lut_tool] Line color tagged IN RANGE!!." << std::endl;
         lut_tool->modifyTableRange(3);
         break;
       } else if (key == 32)
