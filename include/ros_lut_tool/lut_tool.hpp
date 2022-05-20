@@ -2,6 +2,7 @@
 #define __ROS_LUT_TOOL_H_
 
 #include <iostream>
+#include <ctime>
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
